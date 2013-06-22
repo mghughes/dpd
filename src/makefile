@@ -4,11 +4,18 @@
 # Copyright (C) Matthieu Hughes, 2013
 # matthieuhughes.1@gmail.com
 #
-# last update: 05/06/13, Matthieu Hughes
+# last update: 22/06/13, Matthieu Hughes
+#       Only works for all option
+#       change to reflect new directory structure
 #
     
 SHELL=/bin/bash
 #
+SIM_SRCS = calc.c sim_helper.c sim_update.c
+HIST_SRCS = hist_init.c hist_print.c hist_update.c
+INIT_SRCS = cell.c io.c mem.c param_init.c part_init.c
+
+
 SRCS = main.c calc.c cell.c hist_init.c hist_print.c hist_update.c io.c mem.c param_init.c part_init.c sim_helper.c sim_update.c
 
 OBJS = main.o calc.o cell.o hist_init.o hist_print.o hist_update.o io.o mem.o param_init.o part_init.o sim_helper.o sim_update.o
