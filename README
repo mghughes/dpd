@@ -9,15 +9,15 @@ Current funcionality includes:
     - Free polymer
 
 
-Build:
+BUILD:
 Compile all.c in the src directory (requires link to math library). Other options in makefile don't currently work (will change this in the future).
 
 
-Run:
+RUN:
 Run in a directory with input file dpd.inp. Or use sub.sh and run.sh to submit jobs to any Sun Grid Engine system.
 
 
-Input parameters in dpd.inp:
+INPUT PARAMETERS:
             
             usual/
             suggested
