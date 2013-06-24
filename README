@@ -35,10 +35,10 @@ Lx          -           float   System size, x direction
 Ly          -           float   System size, y direction
 Lz          -           float   System size, z direction
 wallDensity 3.0         float   density of wallParticles
-                                    * Set to <=0 for no wall
+                                    - Set to <=0 for no wall
 wallLayers  2 or 3      int     Number of wall particle layers (2 or 3)
 poreWidth               float   Nanopore width (square side length)
-                                    * Set to <0 for no pore
+                                    - Set to <0 for no pore
 dt          0.04        float   Timestep (0.04)
 tMax        -           float   Simulation time
 eqTime      -           float   Time for system to equilibrate
