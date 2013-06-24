@@ -1,7 +1,10 @@
 #!/bin/bash
 
 #
-# run script for dpd simulation program
+# run script for dpd simulation program.
+#
+# Written for use on ACEnet computer clusters
+# but should work on any computer/cluster
 #
 # Copyright (C) Matthieu Hughes, 2013
 # matthieuhughes.1@gmail.com

@@ -3,6 +3,9 @@
 #
 # script for submitting dpd jobs to clusters
 #
+# Written for use on ACEnet computer clusters,
+# but should work for other systems using Sun Grid Engine
+#
 # Copyright (C) Matthieu Hughes, 2013
 # matthieuhughes.1@gmail.com
 #

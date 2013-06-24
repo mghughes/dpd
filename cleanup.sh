@@ -7,7 +7,7 @@
 # matthieuhughes.1@gmail.com
 #
 # last update: 21/06/13, Matthieu Hughes
-#		removed structure factor and rdf stuff
+#   removed structure factor and rdf stuff
 #
 
 # NOTES:
