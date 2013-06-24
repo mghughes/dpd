@@ -26,7 +26,7 @@ struct params
         L[3],       // box side lengths {x,y,z}
         wallDensity,// density of wall particles (usu. 3)
                             // set to <=0 for no wall
-	poreWidth,  // (square) nanopore width
+    	poreWidth,  // (square) nanopore width
                             // set to <0 for no pore
 	dt,         // timestep (usu. 0.04)
 	tMax,       // simulation time
@@ -60,7 +60,8 @@ struct params
 	recdiff2sq,	        // reciprocal of diff2*diff2
         cellDist[3],		// distance between cells in 1D
         Ncell,			// number of cells
-        elapsedTime;		// time counter
+        elapsedTime,		// time counter
+        binWidthDens;           // width of each density bin
 
     int     
 	Ntot,			// total particle number
@@ -68,13 +69,14 @@ struct params
         Nwall,			// total wall particles
         Nwall_x,		// wall particles in x direction
         Nwall_y,		// wall particles in y direction
-        atLeastOneHist,		// yes if there is at least one hist to calc
         nsamp,			// counter for number of sampling steps
         *prevMonPos,		// previous mon positions (for trans calc)
         *currentMonPos,		// current mon positions
         NmonCis,		// number of monomers on cis side
         NmonTrans,		// number of monomers on trans side
-        NmonPore;		// number of monomers in pore
+        NmonPore,   		// number of monomers in pore
+        NbinDens,              // number of bins in density histogram
+        *dens;                  // array for density histogram
 };
 
 typedef struct params params;

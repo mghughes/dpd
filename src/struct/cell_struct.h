@@ -17,7 +17,7 @@ struct cellList
 {
     int	                index;
     struct particle     *head;             
-    struct cellList	*neighbour[27];
+    struct cellList     *neighbour[27];
 };
 
 typedef struct cellList cellList;

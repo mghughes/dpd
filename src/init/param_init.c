@@ -170,8 +170,13 @@ void calcParams(void)
         p.wallDist = p.Awall = 0.0;
     }
 
-    /* Param to check if histogram functions should be called */
-    p.atLeastOneHist = ((p.ydens || p.ydensxy) ? 1 : 0);
+    /* Density histogram stuff */
+    if (p.ydens)
+    {
+        p.NbinDens = 3000;
+        p.binWidthDens = p.L[2]/p.NbinDens;
+    }
+
 }
 
 /*

@@ -12,10 +12,6 @@
 #include "init/cell.h"
 #include "struct/cell_struct.h"
 #include "struct/file_struct.h"
-#include "hist/hist_init.h"
-#include "hist/hist_print.h"
-#include "struct/hist_struct.h"
-#include "hist/hist_update.h"
 #include "init/io.h"
 #include "init/mem.h"
 #include "init/param_init.h"
@@ -36,7 +32,6 @@
 particle *part;
 cellList *cell;
 params p;
-histParams h;
 files f;
 
 /* Exit values for DPD program:
@@ -90,10 +85,6 @@ int main()
     else // No wall, but still initialize the polymer
         initPoly();
 
-    /* Initialize histograms to be printed */
-    if (p.atLeastOneHist)
-        initHists();
-
     /* Initialize cells/particle lists */
     initCells();
     constructList();
@@ -106,8 +97,8 @@ int main()
             calcNseg(ti);
 
         calcReRg();
-        if (p.atLeastOneHist)
-            updateHists();
+        if (p.ydens)
+            updateDens();
         if (p.yaveTemp)
             averageTemp();
         if (p.ymonPos)
@@ -129,8 +120,8 @@ int main()
                 calcNseg(ti);
 
             calcReRg();
-            if (p.atLeastOneHist)
-                updateHists();
+            if (p.ydens)
+                updateDens();
             if (p.yaveTemp)
                 averageTemp();
             if (p.ymonPos)
@@ -142,16 +133,16 @@ int main()
 	/* Print histograms and flush output file buffers */
 	if (0 == step%p.freqOut)
         {
-            if (p.atLeastOneHist)
-                printHists();
+            if (p.ydens)
+                printDens();
             
             flushFiles();
         }
     }
 
     /* Print hists at end of simulation */
-    if (p.atLeastOneHist)
-        printHists();
+    if (p.ydens)
+        printDens();
 
     freeMemory();
 

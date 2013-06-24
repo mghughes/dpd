@@ -352,3 +352,40 @@ void printInfo(char choice, char particleType)
         part_i++;
     }
 }
+
+/*
+ * -----------------------------
+ * Update density (z) histogram
+ * -----------------------------
+ */
+void updateDens(void)
+{
+    double dbin_dens;
+    int i, bin_dens;
+    particle *part_i;
+
+    part_i = part;
+    for (i=p.Nmon;i<p.Ntot-p.Nwall;i++,part_i++)
+    {
+        dbin_dens = part_i->r[2]/p.binWidthDens;
+        bin_dens = (int)floor(dbin_dens);
+            
+        p.dens[bin_dens]++;
+    }
+}
+
+/*
+ * ------------------------------------------
+ * Normalize and print density (z) histogram
+ * ------------------------------------------
+ */
+void printDens(void)
+{
+    int i;
+
+    rewind(f.dens);
+    for (i=0;i<p.NbinDens;i++)
+    {
+        fprintf(f.dens,"%f %f\n",((double)i+0.5)*p.binWidthDens,(double)p.dens[i]/(p.nsamp*p.L[0]*p.L[1]*p.binWidthDens));
+    }
+}

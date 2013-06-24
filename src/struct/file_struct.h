@@ -22,7 +22,7 @@ struct files
 	*rg_cis,    // rg of  "    "     "      "     "
         *re_trans,  // re of monomers that exited on trans side
         *rg_trans,  // rg "    "         "        "    "
-	*nseg,	    // translocation
+		*nseg,	    // translocation
         *log,	    // log file
         *dens,	    // dens (z)
         *tempAve,   // average temperature

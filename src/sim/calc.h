@@ -20,5 +20,7 @@ void	printReRg_cisTrans(double (*rmon)[3],
 void	calcNseg(double ti);
 void	averageTemp(void);
 void	printInfo(char choice, char particleType);
+void    updateDens(void);
+void    printDens(void);
 
 #endif /* _CALC_H */

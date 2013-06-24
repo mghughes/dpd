@@ -12,7 +12,6 @@
 #include "../struct/param_struct.h"
 #include "../struct/part_struct.h"
 #include "../struct/cell_struct.h"
-#include "../struct/hist_struct.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -26,7 +25,8 @@
 void allocateMemory(void)
 {
     int i,d;
-    // particle array
+    
+    /* Particle array */
     part = malloc(p.Ntot*sizeof(particle));
     if (part==NULL)
         mallocError("part");
@@ -48,6 +48,7 @@ void allocateMemory(void)
 	}
     }
 
+    /* CellList array */
     cell = malloc(p.Ncell*sizeof(cellList));
     if (cell==NULL)
         mallocError("part");
@@ -58,6 +59,17 @@ void allocateMemory(void)
         cell[i].head = NULL;
         for (d=0;d<27;d++)
             cell[i].neighbour[d] = NULL;
+    }
+
+    /* Density histogram */
+    if (p.ydens)
+    {
+        p.dens = (int*)malloc(p.NbinDens*sizeof(int));
+        if (p.dens==NULL)
+            mallocError("dens");
+        
+        for (i=0;i<p.NbinDens;i++)
+            p.dens[i] = 0;
     }
 }
 
@@ -83,7 +95,7 @@ void freeMemory(void)
 {
     free(part);
     free(cell);
-    free(h.dens);
+    free(p.dens);
     free(p.currentMonPos);
     free(p.prevMonPos);
 }
