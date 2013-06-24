@@ -15,8 +15,8 @@
 void	pbcDiff(double *diff, int d);
 void	pbcPos(particle *part_i, int d);
 void	bounceback(void);
-int		isInWall(particle *part_i);
-int		isInPore(particle *part_i);
+int	isInWall(particle *part_i);
+int	isInPore(particle *part_i);
 double	Atype(int i, int j);
 
 #endif /* _SIM_HELPER_H */
