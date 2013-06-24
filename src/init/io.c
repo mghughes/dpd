@@ -47,17 +47,6 @@ void openFiles(void)
         if ((f.dens=fopen("dens","w"))==NULL)
             fileOpenError("dens");
     }
-    if (p.ydensxy)
-    {
-        if ((f.densxy1=fopen("densxy1","w"))==NULL)
-            fileOpenError("densxy1");
-        if ((f.densxy2=fopen("densxy2","w"))==NULL)
-            fileOpenError("densxy2");
-        if ((f.densxy3=fopen("densxy3","w"))==NULL)
-            fileOpenError("densxy3");
-        if ((f.densxy4=fopen("densxy4","w"))==NULL)
-            fileOpenError("densxy4");
-    }
     if (p.yaveTemp)
     {
         if ((f.tempAve=fopen("tempAve","w"))==NULL)
@@ -97,13 +86,6 @@ void closeFiles(void)
     }
     if (p.ydens)
         fclose(f.dens);
-    if (p.ydensxy)
-    {
-        fclose(f.densxy1);
-        fclose(f.densxy2);
-        fclose(f.densxy3);
-        fclose(f.densxy4);
-    }
     if (p.yaveTemp)
     {
         fprintf(f.tempAve,"\n");
@@ -132,13 +114,6 @@ void flushFiles(void)
     }
     if (p.ydens)
         fflush(f.dens);
-    if (p.ydensxy)
-    {
-        fflush(f.densxy1);
-        fflush(f.densxy2);
-        fflush(f.densxy3);
-        fflush(f.densxy4);
-    }
     if (p.yaveTemp)
         fflush(f.tempAve);
 }

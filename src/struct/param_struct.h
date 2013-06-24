@@ -38,7 +38,6 @@ struct params
 	freqSamp,	// sample frequency
 	freqOut,	// print frequency
         ydens,      // yes to print density profile
-        ydensxy,    // yes to print xy density profiles
         yaveTemp,   // yes to print average temperature
         ymonPos;    // yes to print monomer positions
 		

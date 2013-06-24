@@ -64,7 +64,6 @@ void getParams(void)
 
     // what to print
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.ydens);
-    paramCount += fscanf(fpIn,"%d\t%*s\n",&p.ydensxy);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.yaveTemp);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.ymonPos);
 
@@ -106,7 +105,6 @@ void assertParams(int count)
     assert(p.freqOut >= p.freqSamp);
 
     assert(p.ydens>=0 && p.ydens<2);
-    assert(p.ydensxy>=0 && p.ydensxy<2);
     assert(p.yaveTemp>=0 && p.yaveTemp<2);
     assert(p.ymonPos>=0 && p.ymonPos<2);
 }
@@ -212,7 +210,6 @@ void printParams(void)
     fprintf(f.log,"%d\tfreqOut\n",p.freqOut);
 
     fprintf(f.log,"\n%d\tydens\n",p.ydens);
-    fprintf(f.log,"%d\tydensxy\n",p.ydensxy);
     fprintf(f.log,"%d\tyaveTemp\n",p.yaveTemp);
     fprintf(f.log,"%d\tymonPos\n",p.ymonPos);
 }
