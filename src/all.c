@@ -9,11 +9,14 @@
  */
 
 #include "main.c"
-#include "sim/calc.c"
+
 #include "init/cell.c"
 #include "init/io.c"
 #include "init/mem.c"
 #include "init/param_init.c"
 #include "init/part_init.c"
+
+#include "sim/calc_other.c"
+#include "sim/calc_rerg.c"
 #include "sim/sim_helper.c"
 #include "sim/sim_update.c"

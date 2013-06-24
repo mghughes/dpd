@@ -8,16 +8,19 @@
  */
 
 /* DPD header files */
-#include "sim/calc.h"
 #include "init/cell.h"
-#include "struct/cell_struct.h"
-#include "struct/file_struct.h"
 #include "init/io.h"
 #include "init/mem.h"
 #include "init/param_init.h"
-#include "struct/param_struct.h"
 #include "init/part_init.h"
+
+#include "struct/cell_struct.h"
+#include "struct/file_struct.h"
+#include "struct/param_struct.h"
 #include "struct/part_struct.h"
+
+#include "sim/calc_other.h"
+#include "sim/calc_rerg.h"
 #include "sim/sim_helper.h"
 #include "sim/sim_update.h"
 
