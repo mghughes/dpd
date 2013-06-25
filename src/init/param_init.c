@@ -79,7 +79,7 @@ void getParams(void)
  */
 void assertParams(int count)
 {
-    int numParams = 24; // *** CHANGE THIS IF YOU ADD/REMOVE INPUT PARAMS ***
+    int numParams = 23; // *** CHANGE THIS IF YOU ADD/REMOVE INPUT PARAMS ***
 
     assert(count==numParams);
     assert(p.Aff >= 0);

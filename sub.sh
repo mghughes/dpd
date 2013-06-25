@@ -78,8 +78,7 @@ echo -e "$wallLayers\twallLayers\n$poreWidth\tporeWidth" >> dpd.inp
 echo -e "$dt\tdt\n$tMax\ttMax\n$eqTime\teqTime" >> dpd.inp
 echo -e "$freqSamp\tfreqSamp\n$freqOut\tfreqOut\n$seed\tseed" >> dpd.inp
 
-echo -e "$ydens\tydens\n$ydensxy\tydensxy" >> dpd.inp
-echo -e "$yaveTemp\tyaveTemp\n$ymonPos\tymonPos" >> dpd.inp
+echo -e "$ydens\tydens\n$yaveTemp\tyaveTemp\n$ymonPos\tymonPos" >> dpd.inp
 
 # make run.inp in dir/src
 echo -e "$version\tversion\n$njobs\tnjobs\n$filesperjob\tfilesperjob\n$foldername\tfoldername" > run.inp
