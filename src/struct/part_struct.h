@@ -10,7 +10,6 @@
 #ifndef _PART_STRUCT_H
 #define _PART_STRUCT_H
 
-// holds particle information
 struct particle
 {
     double  
