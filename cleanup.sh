@@ -67,7 +67,6 @@ done
 # read dpd.inp for optional folders (struct, dens, etc.)
 echo "Scanning dpd.inp"
 dens=$(cat dpd.inp | grep 'ydens' | awk '{print $1}')
-densxy=$(cat dpd.inp | grep 'ydensxy' | awk '{print $1}')
 aveTemp=$(cat dpd.inp | grep 'yaveTemp' | awk '{print $1}')
 monPos=$(cat dpd.inp | grep 'ymonPos' | awk '{print $1}')
 poreWidth=$(cat dpd.inp | grep 'poreWidth' | awk '{print $1}')
@@ -85,8 +84,8 @@ else
 fi
 
 # store values and names in arrays
-folderVal=( $dens $densxy $rdf $struct $aveTemp $monPos $re_cis $rg_cis $re_trans $rg_trans )
-folderName=( "dens" "densxy" "rdf" "struct" "aveTemp" "monPos" "re_cis" "rg_cis" "re_trans" "rg_trans" )
+folderVal=( $dens $aveTemp $monPos $re_cis $rg_cis $re_trans $rg_trans )
+folderName=( "dens" "aveTemp" "monPos" "re_cis" "rg_cis" "re_trans" "rg_trans" )
 
 # loop through arrays and create folders
 echo "Creating optional folders"
