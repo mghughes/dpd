@@ -10,6 +10,8 @@
 #ifndef _PARAM_INIT_H
 #define _PARAM_INIT_H
 
+#define EPSILON 0.00001     // for double equality comparisons
+
 void	getParams(void);
 void	assertParams(int count);
 void	calcParams(void);

@@ -38,10 +38,10 @@ params p;
 files f;
 
 /* Exit values for DPD program:
- *		0 - exit from end of main  - success
- *	or	0 - exit from calcNseg function (complete translocation) - success
- *		1 - exit from fileOpenError - failure
- *		2 - exit from mallocError - failuire
+ *      0 - exit from end of main  - success
+ *  or	0 - exit from calcNseg function (complete translocation) - success
+ *      1 - exit from fileOpenError - failure
+ *	2 - exit from mallocError - failuire
  */
 
 
@@ -112,7 +112,9 @@ int main()
 
     /* MAIN SIMULATION LOOP */
     int step = 1;
-    for (p.elapsedTime=p.dt;p.elapsedTime<=p.tMax;p.elapsedTime+=p.dt,step++)
+    for (p.elapsedTime = p.dt;
+         p.elapsedTime <= p.tMax;
+         p.elapsedTime += p.dt,step++)
     {	
         updateSys();
 

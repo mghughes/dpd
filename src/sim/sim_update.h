@@ -10,16 +10,17 @@
 #ifndef _SIM_UPDATE_H
 #define _SIM_UPDATE_H
 
-#define ALLFORCES   0   // for dissOnly flags
-#define ONLYDISS    1
-
 #include "../struct/part_struct.h"
+
+/* For dissOnly flags */
+#define ONLYDISS 1
+#define ALLFORCES 0
 
 void	updateSys(void);
 void	updatePosVel(int dissOnly);
 void	calcForces(int dissOnly);
 void	dpdForces(particle *part_i, particle *part_j, 
-                  int dissOnly);
+            int dissOnly);
 void	harmForce(void);
 
 #endif /* _SIM_UPDATE_H */

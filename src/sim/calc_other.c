@@ -89,16 +89,9 @@ void calcNseg(double ti)
     }
     else // Print NmonCis and NmonTrans to nseg file
     {
-        fprintf(f.nseg,"%f %d %d\n",p.elapsedTime,p.NmonCis,p.NmonTrans);
+        fprintf(f.nseg,"%.2f %d %d\n",p.elapsedTime,p.NmonCis,p.NmonTrans);
         for (i=0;i<p.Nmon;i++)
             p.prevMonPos[i] = p.currentMonPos[i];
-        /*printf("mon positions\n");
-        for (i=0;i<par.Nmon;i++)
-        {
-            printf("%f %d %d\n",elapsedTime,i,currentMonPos[i]);
-        }
-        printInfo('p','m');
-        */
     }
 }
 
@@ -205,10 +198,13 @@ void updateDens(void)
 void printDens(void)
 {
     int i;
+    double z,density;
 
     rewind(f.dens);
     for (i=0;i<p.NbinDens;i++)
     {
-        fprintf(f.dens,"%f %f\n",((double)i+0.5)*p.binWidthDens,(double)p.dens[i]/(p.nsamp*p.L[0]*p.L[1]*p.binWidthDens));
+        z = (double)(i+0.5)*p.binWidthDens;
+        density = (double)p.dens[i]/(p.nsamp+p.L[0]*p.L[1]*p.binWidthDens);
+        fprintf(f.dens,"%f %f\n",z,dens);
     }
 }

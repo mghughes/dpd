@@ -28,7 +28,7 @@ void allocateMemory(void)
     
     /* Particle array */
     part = malloc(p.Ntot*sizeof(particle));
-    if (part==NULL)
+    if (part == NULL)
         mallocError("part");
 
     for (i=0;i<p.Ntot;i++)
@@ -50,7 +50,7 @@ void allocateMemory(void)
 
     /* CellList array */
     cell = malloc(p.Ncell*sizeof(cellList));
-    if (cell==NULL)
+    if (cell == NULL)
         mallocError("part");
 
     for (i=0;i<p.Ncell;i++)
@@ -65,11 +65,25 @@ void allocateMemory(void)
     if (p.ydens)
     {
         p.dens = (int*)malloc(p.NbinDens*sizeof(int));
-        if (p.dens==NULL)
+        if (p.dens == NULL)
             mallocError("dens");
         
         for (i=0;i<p.NbinDens;i++)
             p.dens[i] = 0;
+    }
+
+    /* Arrays for monomer positions */
+    if (poreWidth > 0)
+    {
+        p.prevMonPos = (int*)malloc(p.Nmon*sizeof(int));
+        if (p.prevMonPos == NULL)
+            mallocError("preMonPos");
+        p.currentMonPos = (int*)malloc(p.Nmon*sizeof(int));
+        if (p.currentMonPos == NULL)
+            mallocError("currentMonPos");
+    
+        for (i=0;i<p.Nmon;i++)
+            p.prevMonPos[i] = p.currentMonPos[i] = 0;
     }
 }
 
@@ -88,7 +102,6 @@ void mallocError(char *str)
 /*
  * ------------------------------------------
  * Free allocated memory
- * including what was allocated in initHists
  * ------------------------------------------
  */
 void freeMemory(void)

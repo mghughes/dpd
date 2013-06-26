@@ -13,9 +13,9 @@
 #include "../struct/file_struct.h"
 #include "io.h"
 #include <stdio.h>
-#include <assert.h>		// for assertParams function
+#include <assert.h>	// for assertParams function
 #include <sys/types.h>	// for getpid function
-#include <unistd.h>		//		"
+#include <unistd.h>	//		"
 #include <math.h>
 
 /*
@@ -27,14 +27,14 @@
  */
 void getParams(void)
 {
-    // counter for number of parameters read
+    /* Counter for number of parameters read */
     int paramCount = 0;
 
     FILE *fpIn;
     if ((fpIn=fopen("dpd.inp","r"))==NULL)
         fileOpenError("dpd.inp");
 
-    // force strengths
+    /* Force strengths */
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Aff);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Amm);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Amf);
@@ -43,26 +43,26 @@ void getParams(void)
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.K);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.fDrive);
 
-    // particle info
+    /* Particle info */
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.Nmon);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.density);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.L[0]);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.L[1]);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.L[2]);
 
-    // wall info
+    /* Wall info */
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.wallDensity);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.wallLayers);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.poreWidth);
 
-    // run info
+    /* Run info */
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.dt);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.tMax);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.eqTime);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.freqSamp);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.freqOut);
 
-    // what to print
+    /* What to print */
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.ydens);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.yaveTemp);
     paramCount += fscanf(fpIn,"%d\t%*s\n",&p.ymonPos);
@@ -81,28 +81,28 @@ void assertParams(int count)
 {
     int numParams = 23; // *** CHANGE THIS IF YOU ADD/REMOVE INPUT PARAMS ***
 
-    assert(count==numParams);
-    assert(p.Aff >= 0);
-    assert(p.Amf >= 0);
-    assert(p.Amm >= 0);
-    assert(p.SIGMA >= 0);
-    assert(p.GAMMA >= 0);
-    assert(p.K >= 0);
-    assert(p.fDrive >= 0);
+    assert(count == numParams);
+    assert(p.Aff > -EPSILON);
+    assert(p.Amf > -EPSILON);
+    assert(p.Amm > -EPSILON);
+    assert(p.SIGMA > -EPSILON);
+    assert(p.GAMMA > -EPSILON);
+    assert(p.K > -EPSILON);
+    assert(p.fDrive > -EPSILON);
 
     assert(p.Nmon >= 0);
-    assert(p.density >= 0);
-    assert(p.L[0] >= 0);
-    assert(p.L[1] >= 0);
-    assert(p.L[2] >= 0);
+    assert(p.density > -EPSILON);
+    assert(p.L[0] >  -EPSILON);
+    assert(p.L[1] > -EPSILON);
+    assert(p.L[2] > -EPSILON);
 
-    assert(p.wallDensity >= 0);
+    assert(p.wallDensity > -EPSILON);
 
-    assert(p.dt >= 0);
-    assert(p.tMax >= 0);
-    assert(p.eqTime >= 0);
-    assert(p.freqSamp >= 0);
-    assert(p.freqOut >= p.freqSamp);
+    assert(p.dt > -EPSILON);
+    assert(p.tMax > -EPSILON);
+    assert(p.eqTime > -EPSILON);
+    assert(p.freqSamp > 0);
+    assert(p.freqOut > p.freqSamp);
 
     assert(p.ydens>=0 && p.ydens<2);
     assert(p.yaveTemp>=0 && p.yaveTemp<2);
@@ -149,7 +149,7 @@ void calcParams(void)
      * Paremeters related to wall stuff.
      * If there is a pore, some of these get changed in initWallWithPore
      */
-    if (p.wallLayers>0)
+    if (p.wallLayers > 0)
     {
         p.Nwall_x = (int)(p.L[0]*pow(p.wallDensity,1.0/3.0) + 0.5);
         p.Nwall_y = (int)(p.L[1]*pow(p.wallDensity,1.0/3.0) + 0.5);
@@ -164,8 +164,9 @@ void calcParams(void)
     }
     else
     {
-        p.Nwall = 0;
-        p.wallDist = p.Awall = 0.0;
+        p.Nwall = 
+        p.wallDist = 
+        p.Awall = 0;
     }
 
     /* Density histogram stuff */

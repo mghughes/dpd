@@ -46,24 +46,6 @@ void initCells(void)
             cell_i->neighbour[j] = &cell[index_j];
         }}}
     }}}
-    
-    /*
-    // print neighbours - for debugging purposes
-    cellList *cell_j;
-    cell_i = cell;
-    for (i=0;i<p.Ncell;i++)
-    {
-        printf("cell %03d %02d %02d %02d neighbours\n",cell_i->index,cell_i->vecIndex[0],cell_i->vecIndex[1],cell_i->vecIndex[2]);
-
-        for (j=0;j<27;j++)
-        {
-            cell_j = cell_i->neighbour[j];
-            printf("\tcell %03d %02d %02d %02d\n",cell_j->index,cell_j->vecIndex[0],cell_j->vecIndex[1],cell_j->vecIndex[2]);
-
-        }
-        cell_i++;
-    }
-    */
 }
 
 /*
@@ -92,14 +74,6 @@ void constructList(void)
 	part_i->next = ((cell_i->head==NULL) ? NULL : cell_i->head);
         cell_i->head = part_i;
 
-        /*
-        // print positions and cells (debugging purposes)
-        if ((int)(p.elapsedTime/p.dt) % p.freqOut == 0)
-        {
-            printf("%.2f %.2f %.2f ", part_i->r[0],part_i->r[1],part_i->r[2]);
-            printf("%03d\n",index);
-        }
-	*/
     }
 }
 

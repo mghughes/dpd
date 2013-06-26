@@ -37,18 +37,6 @@ void calcReRg(void)
     printReRg(rmon, CM);
     if (p.poreWidth > 0)
         printReRg_cisTrans(rmon, CMcis, CMtrans);
-
-    /* print z positions of monomers - diagnostic for trans
-    struct particle *part_i;
-    part_i = part;
-    printf("%f ",elapsedTime);
-    for (i=0;i<par.Nmon;i++)
-    {
-        printf("%f ",part_i->r[2]);
-        part_i++;
-    }
-    printf("\n");
-    */
 }
 
 /*
@@ -57,7 +45,7 @@ void calcReRg(void)
  * ---------------------------------------------------------------------------
  */
 void getRelativePos(double (*rmon)[3], double *CM,
-                    double *CMcis, double *CMtrans)
+    double *CMcis, double *CMtrans)
 {
     int i,d;
     double dr[3],r[3];
@@ -111,7 +99,9 @@ void getRelativePos(double (*rmon)[3], double *CM,
 void printReRg(double (*rmon)[3], double *CM)
 {
     int i,d;
-    double rg[3] = {0};
+    double 
+        rg[3] = {0},
+        re[3] = {0};
 
     /* Find rg */
     for (i=0;i<p.Nmon;i++)
@@ -119,18 +109,16 @@ void printReRg(double (*rmon)[3], double *CM)
         for (d=0;d<3;d++)
             rg[d] += rmon[i][d]-CM[d];
     }
-
-    /* Print re, rg to their respective files */
-    fprintf(f.rg,"%f ",p.elapsedTime);
-    fprintf(f.re,"%f ",p.elapsedTime);
+    
     for (d=0;d<3;d++)
     {
-        fprintf(f.rg,"%f ",rg[d]*rg[d]*p.recNmon);
-        fprintf(f.re,"%f ",rmon[p.Nmon-1][d]-rmon[0][d]);
+        rg[d] = rg[d]*rg[d]*p.recNmon;
+        re[d] = rmon[p.Nmon-1][d]-rmon[0][d];
     }
-    fprintf(f.rg,"\n");
-    fprintf(f.re,"\n");
 
+    /* Print re, rg to their respective files */
+    fprintf(f.rg,"%.2f %f %f %f\n",p.elapsedTime,rg[0],rg[1],rg[2]);
+    fprintf(f.re,"%.2f %f %f %f\n",p.elapsedTime,re[0],re[1],re[2]);
 }
 
 /* -----------------------------------------------------------------
@@ -138,7 +126,7 @@ void printReRg(double (*rmon)[3], double *CM)
  * -----------------------------------------------------------------
  */
 void printReRg_cisTrans(double (*rmon)[3],
-                        double *CMcis, double *CMtrans)
+    double *CMcis, double *CMtrans)
 {
     int i,d;
     double
@@ -165,32 +153,32 @@ void printReRg_cisTrans(double (*rmon)[3],
         }
     }
 
-    /* Find re_cis, re_trans */
+    /* Find re_cis, re_trans and square rg_* */
     if (p.NmonCis != 0 && p.NmonCis != 1) // otherwise leave re[d] at 0
     {
         for (d=0;d<3;d++)
+        {
+            rg_cis[d] = rg_cis[d]*rg_cis[d]/p.NmonCis;
             re_cis[d] = rmon[p.NmonCis-1][d]-rmon[0][d];
+        }
     }
     if (p.NmonTrans != 0 && p.NmonTrans != 1)
     {
         for (d=0;d<3;d++)
+        {
+            rg_trans[d] = rg_trans[d]*rg_trans[d]/p.NmonTrans;
             re_trans[d] = rmon[p.Nmon-1][d]-rmon[p.Nmon-p.NmonTrans][d];
+        }
     }
 
     /* Print rg_cis, rg_trans, re_cis, re_trans to respective files */
-    fprintf(f.rg_cis,"%f ",p.elapsedTime);
-    fprintf(f.rg_trans,"%f ",p.elapsedTime);
-    fprintf(f.re_cis,"%f ",p.elapsedTime);
-    fprintf(f.re_trans,"%f ",p.elapsedTime);
-    for (d=0;d<3;d++)
-    {
-        fprintf(f.rg_cis,"%f ",rg_cis[d]*rg_cis[d]/p.NmonCis);
-        fprintf(f.rg_trans,"%f ",rg_trans[d]*rg_trans[d]/p.NmonTrans);
-        fprintf(f.re_cis,"%f ",re_cis[d]);
-        fprintf(f.re_trans,"%f ",re_trans[d]);
-    }
-    fprintf(f.rg_cis,"\n");
-    fprintf(f.rg_trans,"\n");
-    fprintf(f.re_cis,"\n");
-    fprintf(f.re_trans,"\n");
+    fprintf(f.rg_cis,"%.2f %f %f %f\n",p.elapsedTime,
+            rg_cis[0],rg_cis[1],rg_cis[2]);
+    fprintf(f.rg_trans,"%.2f %f %f %f\n",p.elapsedTime,
+            rg_trans[0],rg_trans[1],rg_trans[2]);
+    fprintf(f.re_cis,"%.2f %f %f %f\n",p.elapsedTime,
+            re_cis[0],re_cis[1],re_cis[2]);
+    fprintf(f.re_trans,"%.2f %f %f %f\n",p.elapsedTime,
+            re_trans[0],re_trans[1],re_trans[2]);
+    
 } 

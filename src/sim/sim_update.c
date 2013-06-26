@@ -58,21 +58,27 @@ void updatePosVel(int dissOnly)
         /* During equilibration stage of translocation,
 	 * keep middle monomer fixed in center of pore
 	 *
-	 * NOTE: this may be causing a segfault because monomers connected to middle
-	 * one feel spring force pulling/pushing it away/towards middle
-	 * (antisymmetric interparticle force)
+	 * NOTE: this may be causing a segfault because monomers connected 
+         * to middle one feel spring force pulling/pushing it 
+         * away/towards middle (antisymmetric interparticle force)
 	 */
         if (p.poreWidth>0 && i==p.Nmon/2 && p.elapsedTime<=p.eqTime) 
 	{
             for (d=0;d<3;d++)
-                part_i->fDiss[d] = part_i->fRand[d] = part_i->fCons[d] = part_i->fHarm[d] = part_i->fDrive[d] = 0.0;
+                part_i->fDiss[d] = 
+                part_i->fRand[d] = 
+                part_i->fCons[d] = 
+                part_i->fHarm[d] = 
+                part_i->fDrive[d] = 0.0;
             continue;
         }
 
         for (d=0;d<3;d++) 
 	{
             /* Update velocities */
-            part_i->v[d] += 0.5*p.dt*(part_i->fHarm[d]+part_i->fDrive[d]+part_i->fCons[d]+part_i->fDiss[d]+part_i->fRand[d]);
+            part_i->v[d] += 0.5*p.dt*(part_i->fHarm[d] + part_i->fDrive[d] +
+                                      part_i->fCons[d] + part_i->fDiss[d] +
+                                      part_i->fRand[d]);
 
             /* Reset dissipative force */
             part_i->fDiss[d] = 0.0;
@@ -84,9 +90,9 @@ void updatePosVel(int dissOnly)
                 pbcPos(part_i, d);
 
                 /* Reset other forces */
-                part_i->fCons[d] = 0.0;
-                part_i->fRand[d] = 0.0;
-                part_i->fHarm[d] = 0.0;
+                part_i->fCons[d] = 
+                part_i->fRand[d] = 
+                part_i->fHarm[d] = 
 		part_i->fDrive[d] = 0.0;
             }
         }
@@ -151,7 +157,8 @@ void calcForces(int dissOnly)
                     }
                     part_i = part_i->next;
                 }
-            }
+            } // end if-elseif 
+
         } // end neighbour loop
     } // end main loop
 
@@ -163,10 +170,13 @@ void calcForces(int dissOnly)
  * ------------------------------------------------------------------
  * Calculates dpd pairwise forces (conservative, dissipative, random)
  * for two particles
+ * 
+ * dissOnly flag: 1 if only dissipative force to be updated
+ *                0 otherwise
  * ------------------------------------------------------------------
  */
 void dpdForces(particle *part_i, particle *part_j, 
-               int dissOnly)
+    int dissOnly)
 {
     double dr[3],dv[3];
     double fRand,fCons,fDiss;
@@ -204,9 +214,9 @@ void dpdForces(particle *part_i, particle *part_j,
         /* Update fDiss for the particles and return */
         for (d=0;d<3;d++)
         {
-            if (i<p.Ntot-p.Nwall)
+            if (i < p.Ntot-p.Nwall)
                 part_i->fDiss[d] += fDiss*dr[d]*recr;
-            if (j<p.Ntot-p.Nwall)
+            if (j < p.Ntot-p.Nwall)
                 part_j->fDiss[d] -= fDiss*dr[d]*recr;
         }
         return;
@@ -222,13 +232,13 @@ void dpdForces(particle *part_i, particle *part_j,
     /* Update the three forces for the particles */
     for (d=0;d<3;d++)
     {
-        if (i<p.Ntot-p.Nwall)
+        if (i < p.Ntot-p.Nwall)
         {
             part_i->fCons[d] += fCons*dr[d]*recr;
             part_i->fRand[d] += fRand*dr[d]*recr;
             part_i->fDiss[d] += fDiss*dr[d]*recr;
         }
-        if (j<p.Ntot-p.Nwall)
+        if (j < p.Ntot-p.Nwall)
         {
             part_j->fCons[d] -= fCons*dr[d]*recr;
             part_j->fRand[d] -= fRand*dr[d]*recr;
@@ -252,6 +262,7 @@ void dpdForces(particle *part_i, particle *part_j,
  */
 void harmForce(void)
 {
+    int i,d;
     particle *part_i,*part_j;
     double 
         dr[3],
@@ -261,7 +272,6 @@ void harmForce(void)
         recr,
         diff1,
         fHarm;
-    int i,d;
 
     /* If tethered polymer, start loop below at 0 not 1 
      * to include spring force with wall
@@ -315,7 +325,8 @@ void harmForce(void)
 	 */
 	if (r >= p.RMAXHARM)
         {
-            fprintf(f.log,"max harm:\tpart %d part %d\t%f\n",i,i-1,p.elapsedTime);
+            fprintf(f.log,"max harm:\tpart %d part %d\t%f\n",
+                    i,i-1,p.elapsedTime);
             fHarm = -p.MAXFORCEHARM;
             recr = 1.0/r;
         }

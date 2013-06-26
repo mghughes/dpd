@@ -52,6 +52,7 @@ void bounceback(void)
     {
         if (isInWall(part_i))
         {
+            /* Don't bounce back if it's in the pore */
             if (p.poreWidth<=0 || !isInPore(part_i))
             {
                 for (d=0;d<3;d++)
@@ -72,8 +73,11 @@ int isInWall(particle *part_i)
 {
     int inWall = 0;
 
-    if (part_i->r[2] > p.L_HALF[2] && part_i->r[2] < p.L_HALF[2]+(p.wallLayers-1)*p.wallDist)
+    if (part_i->r[2] > p.L_HALF[2] 
+     && part_i->r[2] < p.L_HALF[2]+(p.wallLayers-1)*p.wallDist)
+    {
         inWall = 1;
+    }
 
     return inWall;
 }
@@ -87,20 +91,23 @@ int isInWall(particle *part_i)
  */
 int isInPore(particle *part_i)
 {
-    int isInPore = 0;
+    int inPore = 0;
 
-    if (part_i->r[0] > p.xPoreBoundary[0] && part_i->r[0] < p.xPoreBoundary[1])
+    if (part_i->r[0] > p.xPoreBoundary[0] 
+     && part_i->r[0] < p.xPoreBoundary[1])
     {
-        if (part_i->r[1] > p.yPoreBoundary[0] && part_i->r[1] < p.yPoreBoundary[1])
+        if (part_i->r[1] > p.yPoreBoundary[0] 
+         && part_i->r[1] < p.yPoreBoundary[1])
         {
-            if (part_i->r[2] > p.zPoreBoundary[0] && part_i->r[2] < p.zPoreBoundary[1])
+            if (part_i->r[2] > p.zPoreBoundary[0] 
+             && part_i->r[2] < p.zPoreBoundary[1])
             {
-                isInPore = 1;
+                inPore = 1;
             }
         }
     }
 
-    return isInPore;
+    return inPore;
 }
 
 /*
@@ -112,6 +119,7 @@ int isInPore(particle *part_i)
 double Atype(int i, int j)
 {
     double A;
+
     if (j>=p.Ntot-p.Nwall || i>=p.Ntot-p.Nwall)
         A = p.Awall;
     else if (j<p.Nmon && i<p.Nmon)

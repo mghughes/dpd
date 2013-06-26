@@ -13,9 +13,9 @@
 
 void    calcReRg(void);
 void    getRelativePos(double (*rmon)[3], double *CM,
-                       double *CMcis, double *CMtrans);
+            double *CMcis, double *CMtrans);
 void    printReRg(double (*rmon)[3], double *CM);
 void    printReRg_cisTrans(double (*rmon)[3],
-                           double *CMcis, double *CMtrans);
+            double *CMcis, double *CMtrans);
 
 #endif /* _CALC_RERG_H */

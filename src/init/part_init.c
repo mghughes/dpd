@@ -24,7 +24,7 @@ void initFluid(void)
     int i,d;
     double vMax = 1.0;
     double vel;
-    struct particle *part_i,*part_ii;
+    struct particle *part_i,*part_j;
 
     /* Assign random initial positions */
     part_i = &part[p.Nmon];
@@ -37,7 +37,7 @@ void initFluid(void)
         }
 
 	/* Reposition if particle is in wall */
-        if (p.wallLayers>0)
+        if (p.wallLayers > 0)
         {
             while (isInWall(part_i))
             {
@@ -60,12 +60,12 @@ void initFluid(void)
                  * (for momentum conservation)
                  */
                 part_i->v[d] = vel;
-                if ((i+1)>=p.Ntot) // If i is the last particle, give it 0 velocity
+                if ((i+1)>=p.Ntot) // If i is the last part give it 0 velocity
                     part_i->v[d] = 0.0;
                 else
                 {
-                    part_ii = &part[i+1];
-                    part_ii->v[d] = -vel;
+                    part_j = &part[i+1];
+                    part_j->v[d] = -vel;
                 }
             }
 
@@ -117,8 +117,11 @@ void initWallWithPore(void)
     int numPoreParts_1D = (int)(p.poreWidth/p.wallDist + 0.5) - 1;
     p.Ntot -= p.wallLayers*numPoreParts_1D*numPoreParts_1D;
     p.Nwall -= p.wallLayers*numPoreParts_1D*numPoreParts_1D;
-    double xWallDist = (p.L[0]-p.poreWidth+p.wallDist)/(p.Nwall_x-numPoreParts_1D);
-    double yWallDist = (p.L[1]-p.poreWidth+p.wallDist)/(p.Nwall_y-numPoreParts_1D);
+    
+    double xWallDist = (p.L[0]-p.poreWidth+p.wallDist)
+                      /(p.Nwall_x-numPoreParts_1D);
+    double yWallDist = (p.L[1]-p.poreWidth+p.wallDist)
+                      /(p.Nwall_y-numPoreParts_1D);
 
     /* calculate pore boundaries */
     p.xPoreBoundary[0] = p.L_HALF[0] - 0.5*p.poreWidth;
@@ -127,15 +130,21 @@ void initWallWithPore(void)
     p.yPoreBoundary[1] = p.L_HALF[1] + 0.5*p.poreWidth;
     p.zPoreBoundary[0] = p.L_HALF[2];
     p.zPoreBoundary[1] = p.L_HALF[2] + (p.wallLayers-1)*p.wallDist;
-    double xPoreDist = (p.xPoreBoundary[1]-p.xPoreBoundary[0])/(numPoreParts_1D+1);
-    double yPoreDist = (p.yPoreBoundary[1]-p.yPoreBoundary[0])/(numPoreParts_1D+1);
+    
+    double xPoreDist = (p.xPoreBoundary[1]-p.xPoreBoundary[0])
+                      /(numPoreParts_1D+1);
+    double yPoreDist = (p.yPoreBoundary[1]-p.yPoreBoundary[0])
+                      /(numPoreParts_1D+1);
 
     /* Place particles on lattice */
     int i,j,k,d;
     struct particle *part_i;
 
     part_i = &part[p.Ntot-p.Nwall];
-    double currentPos[3] = {p.xPoreBoundary[1],p.yPoreBoundary[0],p.zPoreBoundary[0]};
+    double currentPos[3] = {p.xPoreBoundary[1],
+                            p.yPoreBoundary[0],
+                            p.zPoreBoundary[0]};
+    
     for (k=0;k<p.wallLayers;k++) // loop in z direction
     {
         currentPos[0] = p.xPoreBoundary[1];
@@ -159,9 +168,9 @@ void initWallWithPore(void)
 	 *
          * o  o  o  o     o  o  o  o
 	 */
-        for (j=0;j<p.Nwall_y;j++) // loop in y direction
+        for (j=0;j<p.Nwall_y;j++) // y direction
         {
-            for (i=0;i<p.Nwall_x-numPoreParts_1D;i++,part_i++) // loop in x direction
+            for (i=0;i<p.Nwall_x-numPoreParts_1D;i++,part_i++) // x direction
             {
                 for (d=0;d<3;d++)
                     part_i->r[d] = currentPos[d];
@@ -185,9 +194,9 @@ void initWallWithPore(void)
 	/* Place all other particles
 	 * i.e. those in line with pore in y direction
 	 */
-        for (j=0;j<p.Nwall_y-numPoreParts_1D;j++) // loop in y direction
+        for (j=0;j<p.Nwall_y-numPoreParts_1D;j++) // y direction
         {
-            for (i=0;i<numPoreParts_1D;i++,part_i++) // loop in x direction
+            for (i=0;i<numPoreParts_1D;i++,part_i++) // x direction
             {
                 for (d=0;d<3;d++)
                     part_i->r[d] = currentPos[d];
@@ -210,11 +219,11 @@ void initWallWithPore(void)
 }
 
 /*
- * -----------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
  * Initialize monomer positions and velocities.
  * 
  * Use this function when nanopore is not present, otherwise use initPolyInPore
- * -----------------------------------------------------------------------------
+ * ----------------------------------------------------------------------------
  */
 void initPoly(void)
 {
@@ -237,7 +246,8 @@ void initPoly(void)
     part_i++;
     for (i=1;i<p.Nmon;i++,part_i++)
     {
-        /* Give current monomer same position and velocity as previous monomer */
+        /* Give current monomer same position and 
+           velocity as previous monomer */
         part_ii=&part[i-1];
         for (d=0;d<3;d++)
         {
@@ -262,13 +272,15 @@ void initPoly(void)
             pbcPos(part_i, d);
     }
 
-    /* Randomly displace monomers from lattice by an amount on [-randDisp,randDisp] */
+    /* Randomly displace monomers from lattice by an 
+       amount on [-randDisp,randDisp] */
     part_i = part;
     for (i=0;i<p.Nmon;i++,part_i++)
     {
         for (d=0;d<3;d++)
         {
-            part_i->r[d] += randDisp*(2.0*((double)random()/(double)0x7fffffff)-1.0);
+            part_i->r[d] += randDisp*
+                            (2.0*((double)random()/(double)0x7fffffff)-1.0);
             pbcPos(part_i, d);
         }
     }
@@ -287,13 +299,6 @@ void initPolyInPore(void)
     double randDisp = 0.05;
     double monDist = 0.4;
     particle *part_i,*part_j;
-
-    /*
-     * Allocate memory for monomer position array (for nseg calculation)
-     
-     */
-    p.prevMonPos = malloc(p.Nmon*sizeof(int));
-    p.currentMonPos = malloc(p.Nmon*sizeof(int));
 
     /* Put middle monomer in center of pore */
     part_j = &part[p.Nmon/2];
@@ -385,7 +390,8 @@ void initPolyInPore(void)
     {
         for (d=0;d<3;d++)
         {
-            part_i->r[d] += randDisp*(2.0*((double)random()/(double)0x7fffffff)-1.0);
+            part_i->r[d] += randDisp*
+                            (2.0*((double)random()/(double)0x7fffffff)-1.0);
             pbcPos(part_i, d);
         }
         part_i++;
