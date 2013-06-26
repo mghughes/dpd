@@ -26,11 +26,6 @@ struct files
         *log,	    // log file
         *dens,	    // dens (z)
         *tempAve,   // average temperature
-        *densxy1,   // dens (xy)
-        *densxy2,   //  "
-        *densxy3,   //  "
-        *densxy4;   //  "
-
 };
 
 typedef struct files files;

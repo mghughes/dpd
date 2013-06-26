@@ -13,7 +13,7 @@
 
 struct params
 {
-    // input parameters
+    /* Input parameters */
     double  
         Aff,        // solvent-solvent repulsion strength (usu. 25)
         Amm,        // monomer-monomer repulsion strength (usu. 25)
@@ -35,47 +35,47 @@ struct params
     int     
 	Nmon,       // polymer chain length
         wallLayers, // number of wall particle layers (usu. 2)
-	freqSamp,	// sample frequency
-	freqOut,	// print frequency
+	freqSamp,   // sample frequency
+	freqOut,    // print frequency
         ydens,      // yes to print density profile
         yaveTemp,   // yes to print average temperature
         ymonPos;    // yes to print monomer positions
 		
-    // calculated parameters/constants
+    /* Calculated parameters/constants */
     double  
-	L_HALF[3],		// half of box side lengths
-        wallDist,		// distance between wall parts in 1D
-        Awall,			// solvent-wall and mon-wall force strength
-        xPoreBoundary[2],	// pore boundary in x directions
-        yPoreBoundary[2],	//  "      "        y     "
-        zPoreBoundary[2],	//  "      "        z     "
-	recNmon,		// reciprocal of Nmon
-        recRootdt,		// reciprocal of sqrt(dt)
-        root3,			// sqrt(3)
-	RMAXHARM,		// bond-breaking distance
-	REQ,		        // eq. bond length
-	MAXFORCEHARM,		// force when r>RMAXHARM
-	diff2,			// RMAXHARM-REQ
-	recdiff2sq,	        // reciprocal of diff2*diff2
-        cellDist[3],		// distance between cells in 1D
-        Ncell,			// number of cells
-        elapsedTime,		// time counter
-        binWidthDens;           // width of each density bin
+	L_HALF[3],	    // half of box side lengths
+        wallDist,	    // distance between wall parts in 1D
+        Awall,		    // solvent-wall and mon-wall force strength
+        xPoreBoundary[2],   // pore boundary in x directions
+        yPoreBoundary[2],   //  "      "        y     "
+        zPoreBoundary[2],   //  "      "        z     "
+	recNmon,	    // reciprocal of Nmon
+        recRootdt,	    // reciprocal of sqrt(dt)
+        root3,		    // sqrt(3)
+	RMAXHARM,	    // bond-breaking distance
+	REQ,		    // eq. bond length
+	MAXFORCEHARM,	    // force when r>RMAXHARM
+	diff2,		    // RMAXHARM-REQ
+	recdiff2sq,	    // reciprocal of diff2*diff2
+        cellDist[3],	    // distance between cells in 1D
+        Ncell,		    // number of cells
+        elapsedTime,	    // time counter
+        binWidthDens;       // width of each density bin
 
     int     
-	Ntot,			// total particle number
-        Nfluid,	                // total fluid particles (incl. wall parts)
-        Nwall,			// total wall particles
-        Nwall_x,		// wall particles in x direction
-        Nwall_y,		// wall particles in y direction
-        nsamp,			// counter for number of sampling steps
-        *prevMonPos,		// previous mon positions (for trans calc)
-        *currentMonPos,		// current mon positions
-        NmonCis,		// number of monomers on cis side
-        NmonTrans,		// number of monomers on trans side
-        NmonPore,   		// number of monomers in pore
-        NbinDens,              // number of bins in density histogram
-        *dens;                  // array for density histogram
+	Ntot,		    // total particle number
+        Nfluid,	            // total fluid particles (incl. wall parts)
+        Nwall,		    // total wall particles
+        Nwall_x,	    // wall particles in x direction
+        Nwall_y,	    // wall particles in y direction
+        nsamp,		    // counter for number of sampling steps
+        *prevMonPos,	    // previous mon positions (for trans calc)
+        *currentMonPos,	    // current mon positions
+        NmonCis,	    // number of monomers on cis side
+        NmonTrans,	    // number of monomers on trans side
+        NmonPore,   	    // number of monomers in pore
+        NbinDens,           // number of bins in density histogram
+        *dens;              // array for density histogram
 };
 
 typedef struct params params;
