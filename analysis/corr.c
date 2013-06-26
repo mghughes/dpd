@@ -266,10 +266,12 @@ int main(int argc,char *argv[])
 
 	    for (i=0;i<npts;i++)
 	    {
-	        scans+=fscanf(reIn,"%*f %lf %lf %lf\n", &re[i][0], &re[i][1], &re[i][2]);
+	        scans+=fscanf(reIn,"%*f %lf %lf %lf\n",
+                    &re[i][0], &re[i][1], &re[i][2]);
 	    }
 	    if (scans!=3*npts)
-	        fprintf(stderr,"error: scanned number != npts in file %s",remon);
+	        fprintf(stderr,"error: scanned number != npts in file %s",
+                    remon);
 
 	    /* Exclude equilibration time */
 	    for (i=exclude; i<npts-npts_corr; i++)

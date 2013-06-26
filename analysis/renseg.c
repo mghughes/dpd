@@ -263,9 +263,12 @@ int main()
             /* Read data */
 	    for (i=0; i<npts; i++)
 	    {
-	        fscanf(recisIn,"%*f %lf %lf %lf\n",&re_c[i][0],&re_c[i][1],&re_c[i][2]);
-		fscanf(retransIn,"%*f %lf %lf %lf\n",&re_t[i][d],&re_t[i][d],&re_t[i][d]);
-		fscanf(nsegIn,"%*f %d %d\n",&nseg_c[i],&nseg_t[i]);
+	        fscanf(recisIn,"%*f %lf %lf %lf\n",
+                       &re_c[i][0],&re_c[i][1],&re_c[i][2]);
+		fscanf(retransIn,"%*f %lf %lf %lf\n",
+                       &re_t[i][d],&re_t[i][d],&re_t[i][d]);
+		fscanf(nsegIn,"%*f %d %d\n",
+                       &nseg_c[i],&nseg_t[i]);
 				
 		index_c = nseg_c[i];
 		index_t = nseg_t[i];
@@ -315,24 +318,16 @@ int main()
     {
         if (count_c[i] > 0)
 	{
-            fprintf(cisOut,"%d ",i);
-            for (d=0;d<3;d++)
-            {
-                re_av_c[i][d] /= count_c[i];
-                fprintf(cisOut,"%f ",re_av_c[i][d]);
-            }
-            fprintf(cisOut,"\n");
+            re_av_c[i] /= count_c[i];
+            fprintf(cisOut,"%d ",i,
+                    re_av_c[i][0],re_av_c[i][1],re_av_c[i][2]);
 	}
 
 	if (count_t[i] > 0)
         {
-            fprintf(transOut,"%d ",i);
-            for (d=0;d<3;d++)
-            {
-                re_av_t[i][d] /= count_t[i];
-                fprintf(transOut,"%f ",re_av_t[i][d]);
-            }
-            fprintf(transOut,"\n");
+            re_av_t[i][d] /= count_t[i];
+            fprintf(transOut,"%d %f %f %f\n",i,
+                    re_av_t[i][0],re_av_t[i][1],re_av_t[i][2]);
         }
     
     }
