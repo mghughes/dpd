@@ -6,8 +6,8 @@
 # Copyright (C) Matthieu Hughes, 2013
 # matthieuhughes.1@gmail.com
 #
-# last update: 21/06/13, Matthieu Hughes
-#   removed structure factor and rdf stuff
+# last update: 26/06/13, Matthieu Hughes
+#	fixed re_cis folder creation bug
 #
 
 # NOTES:
