@@ -175,7 +175,6 @@ int main()
     paramCount += fscanf(runIn,"%d\t%*s\n",&filesPerJob);
     paramCount += fscanf(runIn,"%*s\n");	// folderName
    
-    printf("%d njobs\n%d filesPerJob\n",njobs,filesPerJob);
     assert(paramCount==7);	
 
     fclose(dpdIn);
