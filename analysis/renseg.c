@@ -230,9 +230,9 @@ int main()
     	for (m=0;m<filesPerJob;m++)
     	{
             /* Concatenate file names */
-	    sprintf(recis, "%s%s%02d", "re_cis","-",n+1);
-	    sprintf(retrans,"%s%s%02d","re_trans","-",n+1);
-	    sprintf(nsegpart, "%s%s%02d", "nseg","-",n+1);
+	    sprintf(recis, "%s%02d", "re_cis/re_cis-",n+1);
+	    sprintf(retrans,"%s%02d","re_trans/re_trans-",n+1);
+	    sprintf(nsegpart, "%s%02d", "nseg/nseg-",n+1);
 	    if (filesPerJob > 1)
 	    {
 	    	sprintf(temp,"%s%s%02d",recis,"-",m+1);
