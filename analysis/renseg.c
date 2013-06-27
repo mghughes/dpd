@@ -265,7 +265,7 @@ int main()
 	        fscanf(recisIn,"%*f %lf %lf %lf\n",
                        &re_c[i][0],&re_c[i][1],&re_c[i][2]);
 		fscanf(retransIn,"%*f %lf %lf %lf\n",
-                       &re_t[i][d],&re_t[i][d],&re_t[i][d]);
+                       &re_t[i][0],&re_t[i][1],&re_t[i][2]);
 		fscanf(nsegIn,"%*f %d %d\n",
                        &nseg_c[i],&nseg_t[i]);
 				
@@ -294,10 +294,12 @@ int main()
 	} // end filesperjob loop
     } //end nfiles loop
 
+    /* Causes a weird error which exits program
     free2dArray(&re_c,npts,3);
     free2dArray(&re_t,npts,3);
     free(nseg_c);
     free(nseg_t);
+    */
 
 
     /*
@@ -333,10 +335,12 @@ int main()
     
     }
 
+    /* Causes weird error which exits the program
     free2dArray(&re_av_c,N,3);
     free2dArray(&re_av_t,N,3);
     free(count_c);
     free(count_t);
+    */
 
     fclose(cisOut);
     fclose(transOut);
