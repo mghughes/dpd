@@ -260,7 +260,6 @@ int main()
 	        continue;
 	    }
 	    
-            printf("successfully read %s\n",recis);
             /* Read data */
 	    for (i=0; i<npts; i++)
 	    {
