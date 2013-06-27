@@ -318,8 +318,10 @@ int main(int argc,char *argv[])
     } // end nfiles loop
 
 
+    /* causing weird fatal error
     free2dArray(&corrtemp,npts_corr,3);
     free2dArray(&re,npts_corr,3);
+    */
 
     /*
      * -------------------------------
@@ -366,6 +368,8 @@ int main(int argc,char *argv[])
         fprintf(corrzOut,"%f %f\n",i*dtSamp,corr[i][2]);
     } 
 
-    free2dArray(&corr,npts_corr,3);
+    /* causing weird fatal error 
+       free2dArray(&corr,npts_corr,3);
+    */
     exit(0);
 }
