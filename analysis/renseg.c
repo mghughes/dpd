@@ -318,14 +318,16 @@ int main()
     {
         if (count_c[i] > 0)
 	{
-            re_av_c[i] /= count_c[i];
-            fprintf(cisOut,"%d ",i,
+            for (d=0;d<3;d++)
+                re_av_c[i][d] /= count_c[i];
+            fprintf(cisOut,"%d %f %f %f\n",i,
                     re_av_c[i][0],re_av_c[i][1],re_av_c[i][2]);
 	}
 
 	if (count_t[i] > 0)
         {
-            re_av_t[i][d] /= count_t[i];
+            for (d=0;d<3;d++)
+                re_av_t[i][d] /= count_t[i];
             fprintf(transOut,"%d %f %f %f\n",i,
                     re_av_t[i][0],re_av_t[i][1],re_av_t[i][2]);
         }
