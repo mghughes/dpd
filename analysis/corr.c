@@ -88,9 +88,7 @@ int main(int argc,char *argv[])
          *corrzOut;
 
     /* Strings to store filenames */
-    char
-        remon[20],
-        temp[20];
+    char remon[30];
 
     /* Parameters */
     int 
@@ -246,12 +244,10 @@ int main(int argc,char *argv[])
 	    }
             
             /* Concatenate file names */
-            sprintf(remon,"%s%s%02d",filename,"-",n+1);
-            if (filesPerJob > 1)
-            {
-                sprintf(temp,"%s%s%02d",remon,"-",m+1);
-                strcpy(remon,temp);
-            }	
+            if (filesPerJob == 1)
+                sprintf(remon,"%s-%02d",filename,n+1);
+            else
+                sprintf(remon,"%s-%02d-%02d",filename,n+1,m+1);
 	    
             /* Open File */
             if ((reIn = fopen(remon, "r")) == NULL)
@@ -352,9 +348,9 @@ int main(int argc,char *argv[])
     /* Print correlation functions to three files */
     char outFilenamex[20], outFilenamey[20], outFilenamez[20];
 
-    sprintf(outFilenamex, "%s%s%s", filename,"-","corrx");	
-    sprintf(outFilenamey, "%s%s%s", filename,"-","corry");
-    sprintf(outFilenamez, "%s%s%s", filename,"-","corrz");	
+    sprintf(outFilenamex, "%s-corrx", filename);	
+    sprintf(outFilenamey, "%s-corry", filename);
+    sprintf(outFilenamez, "%s-corrz", filename);	
 
     if ((corrxOut=fopen(outFilenamex,"w"))==NULL)
         fileOpenError(outFilenamex);

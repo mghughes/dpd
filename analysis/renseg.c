@@ -83,10 +83,9 @@ int main()
 
     /* Strings to store filenames */
     char 
-        recis[20],
-        retrans[20],
-        nsegpart[20],
-        temp[20];
+        recis[30],
+        retrans[30],
+        nsegpart[30];
 
     /* Parameters */
     int 
@@ -175,7 +174,8 @@ int main()
     paramCount += fscanf(runIn,"%d\t%*s\n",&njobs);
     paramCount += fscanf(runIn,"%d\t%*s\n",&filesPerJob);
     paramCount += fscanf(runIn,"%*s\n");	// folderName
-    
+   
+    printf("%d njobs\n%d filesPerJob\n",njobs,filesPerJob);
     assert(paramCount==7);	
 
     fclose(dpdIn);
@@ -230,17 +230,17 @@ int main()
     	for (m=0;m<filesPerJob;m++)
     	{
             /* Concatenate file names */
-	    sprintf(recis, "%s%02d", "re_cis/re_cis-",n+1);
-	    sprintf(retrans,"%s%02d","re_trans/re_trans-",n+1);
-	    sprintf(nsegpart, "%s%02d", "nseg/nseg-",n+1);
-	    if (filesPerJob > 1)
+	    if (filesPerJob == 1)
+            {
+                sprintf(recis, "re_cis/re_cis-%02d",n+1);
+	        sprintf(retrans,"re_trans/re_trans-%02d",n+1);
+	        sprintf(nsegpart, "nseg/nseg-%02d",n+1);
+            }
+            else
 	    {
-	    	sprintf(temp,"%s%s%02d",recis,"-",m+1);
-	    	strcpy(recis,temp);
-	    	sprintf(temp,"%s%s%02d",retrans,"-",m+1);
-	    	strcpy(retrans,temp);
-	    	sprintf(temp,"%s%s%02d",nsegpart,"-",m+1);
-	    	strcpy(nsegpart,temp);
+                sprintf(recis,"re_cis/re_cis-%02d-%02d",n+1,m+1);
+                sprintf(retrans,"re_trans/re_trans-%02d-%02d",n+1,m+1);
+                sprintf(nsegpart,"nseg/nseg-%02d-%02d",n+1,m+1);
 	    }
 
             /* Continue if file is missing */
@@ -259,7 +259,8 @@ int main()
 	        fileOpenError(nsegpart);
 	        continue;
 	    }
-			
+	    
+            printf("successfully read %s\n",recis);
             /* Read data */
 	    for (i=0; i<npts; i++)
 	    {
