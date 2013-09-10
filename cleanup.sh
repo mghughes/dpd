@@ -37,7 +37,7 @@ for ((u=1;u<=$njobs;u++)); do
 		cd "01"
 
 		# find all files not named *.mon and move to parentDir
-#		find -type f -not -name "*.mon" -exec mv '{}' ./../../'{}'-"$jobNum" \;
+		find -type f -not -name "*.mon" -exec mv '{}' ./../../'{}'-"$jobNum" \;
 		cd ..
 	    fi # end of if 01 dir exists
 
