@@ -73,7 +73,7 @@ void allocateMemory(void)
     }
 
     /* Arrays for monomer positions */
-    if (poreWidth > 0)
+    if (p.poreWidth > 0)
     {
         p.prevMonPos = (int*)malloc(p.Nmon*sizeof(int));
         if (p.prevMonPos == NULL)

@@ -205,6 +205,6 @@ void printDens(void)
     {
         z = (double)(i+0.5)*p.binWidthDens;
         density = (double)p.dens[i]/(p.nsamp+p.L[0]*p.L[1]*p.binWidthDens);
-        fprintf(f.dens,"%f %f\n",z,dens);
+        fprintf(f.dens,"%f %f\n",z,density);
     }
 }
