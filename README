@@ -24,9 +24,12 @@ variable    value       type    description
 
 Aff         25.0        float   Fluid-fluid conservative force strength
 Amm         25.0        float   Monomer-monomer conservative force strength
-Amf         15.0        float   Monomer-fluid conservative force strength
+Amf_cis     15.0        float   Monomer-fluid conservative force strength on cis side of pore
+Amf_trans   15.0        float   Monomer-fluid conservative force strength on trans side of pore
 sigma       3.0         float   Random force strength
 gamma       4.5         float   Dissipative force strength
+sigmaPore   3.0         float   Random force strength in pore
+gammaPore   4.5         float   Dissipative force strength in pore
 K           40.0        float   Spring constant for FENE force
 fDrive      -           float   Nanopore driving force
 Nmon        -           int     Length of polymer chain

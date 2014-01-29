@@ -4,8 +4,8 @@
  *  Copyright (C) Matthieu Hughes, 2013
  *  matthieuhughes.1@gmail.com
  *
- *  last update: 21/06/13, Matthieu Hughes
- *		removed struct and rdf stuff
+ *  last update: 10/06/13, Taylor Dunn
+ *		added Amf_cis and Amf_trans parameters
  */
 
 #ifndef _PARAM_STRUCT_H
@@ -17,11 +17,14 @@ struct params
     double  
         Aff,        // solvent-solvent repulsion strength (usu. 25)
         Amm,        // monomer-monomer repulsion strength (usu. 25)
-        Amf,        // monomer-solvent repulsion strength (usu. 15)
+        Amf_cis,        // monomer-solvent repulsion strength (usu. 15)
+        Amf_trans,        // monomer-solvent repulsion strength (usu. 15)
         SIGMA,      // random force strength (usu. 3)
         GAMMA,      // dissipative force strenght (usu. 4.5)
+        SIGMA_PORE, // random force strength in the pore
+        GAMMA_PORE, // dissipative force strength in the pore
         K,          // spring constant for spring force (usu. 40)
-        fDrive,		// nanopore driving force
+        fDrive,		  // nanopore driving force
         density,    // particle density (usu. 3)
         L[3],       // box side lengths {x,y,z}
         wallDensity,// density of wall particles (usu. 3)

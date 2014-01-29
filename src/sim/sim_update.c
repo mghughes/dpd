@@ -4,7 +4,8 @@
  *  Copyright (C) Matthieu Hughes, 2013
  *  matthieuhughes.1@gmail.com
  *
- *  last update: 04/06/13, Matthieu Hughes
+ *  last update: 05/10/13, Taylor Dunn
+ *      updated force calculations to use gammaType and sigmaType functions
  */
 
 #include "sim_update.h"
@@ -138,7 +139,7 @@ void calcForces(int dissOnly)
                     part_i = part_i->next;
                 }
             }
-	    else if (ci == cell_j->index) // neighbour==current
+            else if (ci == cell_j->index) // neighbour==current
             {
                 part_i = cell_i->head;
                 while (part_i != NULL)
@@ -207,7 +208,8 @@ void dpdForces(particle *part_i, particle *part_j,
     for (d=0;d<3;d++)
         rdotv += dr[d]*dv[d];
     rdotv *= recr;
-    fDiss = -p.GAMMA*oneMinr*oneMinr*rdotv;
+    fDiss = -oneMinr*oneMinr*rdotv;
+    fDiss *= gammaType(part_i, part_j);
 
     if (dissOnly)
     {
@@ -224,10 +226,11 @@ void dpdForces(particle *part_i, particle *part_j,
 
     /* Find random force */
     randNum = p.root3*(2.0*((double)random()/(double)0x7fffffff)-1.0);
-    fRand = p.SIGMA*oneMinr*randNum*p.recRootdt;
+    fRand = oneMinr*randNum*p.recRootdt;
+    fRand *= sigmaType(part_i, part_j);
 
     /* Find conservative force */
-    fCons = Atype(i,j)*oneMinr;
+    fCons = Atype(part_i,part_j)*oneMinr;
 
     /* Update the three forces for the particles */
     for (d=0;d<3;d++)
@@ -298,11 +301,11 @@ void harmForce(void)
     for (;i<p.Nmon;i++,part_i++)
     {
 	/* Driving force for other monomer (not #0) */
-	if (p.poreWidth > 0 && p.fDrive > 0)
-	{
-	    if (isInPore(part_i))
-		part_i->fDrive[2] = p.fDrive;
-	}
+	    if (p.poreWidth > 0 && p.fDrive > 0)
+	    {
+	      if (isInPore(part_i))
+		    part_i->fDrive[2] = p.fDrive;
+	    }
 
 	/* Find interparticle distance */
         r2 = 0.0;

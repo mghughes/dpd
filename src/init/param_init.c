@@ -37,9 +37,12 @@ void getParams(void)
     /* Force strengths */
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Aff);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Amm);
-    paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Amf);
+    paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Amf_cis);
+    paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.Amf_trans);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.SIGMA);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.GAMMA);
+    paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.SIGMA_PORE);
+    paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.GAMMA_PORE);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.K);
     paramCount += fscanf(fpIn,"%lf\t%*s\n",&p.fDrive);
 
@@ -79,14 +82,17 @@ void getParams(void)
  */
 void assertParams(int count)
 {
-    int numParams = 23; // *** CHANGE THIS IF YOU ADD/REMOVE INPUT PARAMS ***
+    int numParams = 26; // *** CHANGE THIS IF YOU ADD/REMOVE INPUT PARAMS ***
 
     assert(count == numParams);
     assert(p.Aff > -EPSILON);
-    assert(p.Amf > -EPSILON);
+    assert(p.Amf_cis > -EPSILON);
+    assert(p.Amf_trans > -EPSILON);
     assert(p.Amm > -EPSILON);
     assert(p.SIGMA > -EPSILON);
     assert(p.GAMMA > -EPSILON);
+    assert(p.SIGMA_PORE > -EPSILON);
+    assert(p.GAMMA_PORE > -EPSILON);
     assert(p.K > -EPSILON);
     assert(p.fDrive > -EPSILON);
 
@@ -127,7 +133,7 @@ void calcParams(void)
     /* Spring force stuff */
     p.RMAXHARM = 2.0;
     p.REQ = 0.7;
-    p.MAXFORCEHARM = 50.0;
+    p.MAXFORCEHARM = 25.0;
     p.diff2 = p.RMAXHARM-p.REQ;
     p.recdiff2sq = 1.0/(p.diff2*p.diff2);	
 
@@ -187,10 +193,13 @@ void printParams(void)
 {
     fprintf(f.log,"%.2f\tAff\n",p.Aff);
     fprintf(f.log,"%.2f\tAmm\n",p.Amm);
-    fprintf(f.log,"%.2f\tAmf\n",p.Amf);
+    fprintf(f.log,"%.2f\tAmf_cis\n",p.Amf_cis);
+    fprintf(f.log,"%.2f\tAmf_trans\n",p.Amf_trans);
     fprintf(f.log,"%.2f\tAwall\n",p.Awall);
     fprintf(f.log,"%.2f\tsigma\n",p.SIGMA);
     fprintf(f.log,"%.2f\tgamma\n",p.GAMMA);
+    fprintf(f.log,"%.2f\tsigma_pore\n",p.SIGMA_PORE);
+    fprintf(f.log,"%.2f\tgamma_pore\n",p.GAMMA_PORE);
     fprintf(f.log,"%.2f\tK\n",p.K);
     fprintf(f.log,"%.2f\tfDrive\n",p.fDrive);
 

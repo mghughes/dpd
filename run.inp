@@ -1,4 +1,4 @@
-9.3	version
-20	njobs
-5	filesperjob
-N15-trans	foldername
+9.5	version
+40	njobs
+10	filesperjob
+exp5/	foldername

@@ -4,7 +4,8 @@
  * Copyright (C) Matthieu Hughes, 2013
  * matthieuhughes.1@gmail.com
  *
- * last update: 04/06/13, Matthieu Hughes
+ * last update: 10/03/13, Taylor Dunn
+ *    added flag for pore particle
  */
 
 #ifndef _PART_STRUCT_H
@@ -23,7 +24,7 @@ struct particle
 
     int partNum;	    // particle number
     struct particle *next;  // next part in cell list
-
+    int porePart; // flag for pore particles
 };
 
 typedef struct particle particle;

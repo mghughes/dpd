@@ -4,7 +4,8 @@
  * Copyright (C) Matthieu Hughes, 2013
  * matthieuhughes.1@gmail.com
  *
- * last update: 04/06/13, Matthieu Hughes
+ * last update: 05/10/13, Taylor Dunn
+ *    added gammaType and sigmaType functions
  */
 
 
@@ -113,21 +114,69 @@ int isInPore(particle *part_i)
 /*
  * ---------------------------------------------------------------
  * Determine which value of A (conservative force strength) to use
- * -- mon-mon,fluid-fluid, mon-fluid, wall
+ * -- mon-mon_cis, mon_mon_trans, fluid-fluid, mon-fluid, wall
+ * 
  * ---------------------------------------------------------------
  */
-double Atype(int i, int j)
+
+double Atype(particle *part_i, particle *part_j)
 {
     double A;
+    int i = part_i->partNum;
+    int j = part_j->partNum;
 
     if (j>=p.Ntot-p.Nwall || i>=p.Ntot-p.Nwall)
         A = p.Awall;
     else if (j<p.Nmon && i<p.Nmon)
         A = p.Amm;
-    else if (j<p.Nmon || i<p.Nmon)
-        A = p.Amf;
+    else if (j<p.Nmon) {
+      if (part_i->r[2] > p.L_HALF[2]) {
+        A = p.Amf_trans;
+      } else {
+        A = p.Amf_cis;
+      }
+    } else if (i<p.Nmon) {
+      if (part_j->r[2] > p.L_HALF[2]) {
+        A = p.Amf_trans;
+      } else {
+        A = p.Amf_cis;
+      }
+    }
     else
         A = p.Aff;
 
     return A;
+}
+
+/*
+ * ---------------------------------------------------------------
+ * Determine which value of gamma (dissipative force strength) to use
+ * -- pore or non-pore
+ * ---------------------------------------------------------------
+ */
+
+double gammaType(particle *part_i, particle *part_j)
+{
+    if (part_i->porePart || part_j->porePart) {
+      return p.GAMMA_PORE;
+    } else {
+      return p.GAMMA;
+    }
+}
+
+/*
+ * ---------------------------------------------------------------
+ * Determine which value of sigma (random force strength) to use
+ * -- pore or non-pore
+ * ---------------------------------------------------------------
+ */
+
+double sigmaType(particle *part_i, particle *part_j)
+{
+    if (part_i->porePart || part_j->porePart) {
+      return p.SIGMA_PORE;
+    } else {
+      return p.SIGMA;
+    }
+
 }

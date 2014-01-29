@@ -4,8 +4,8 @@
  * Copyright (C) Matthieu Hughes, 2013
  * matthieuhughes.1@gmail.com
  *
- * last update: 21/06/13, Matthieu Hughes
- *		cleaned up dead code
+ * last update: 03/10/13, Taylor Dunn
+ *		added label for pore particles
  */
 
 #include "../struct/part_struct.h"
@@ -30,7 +30,7 @@ void initFluid(void)
     part_i = &part[p.Nmon];
     for (i=p.Nmon;i<p.Ntot-p.Nwall;i++,part_i++)
     {
-
+        part_i->porePart = 0;
         for (d=0;d<3;d++)
         {
             part_i->r[d] = p.L[d]*((double)random()/(double)0x7fffffff);
@@ -98,6 +98,7 @@ void initWall(void)
                 part_i->r[0] = i*p.wallDist;
                 part_i->r[1] = j*p.wallDist;
                 part_i->r[2] = p.L_HALF[2] + k*p.wallDist;
+                part_i->porePart = 0;
             }
         }
     }
@@ -130,7 +131,7 @@ void initWallWithPore(void)
     p.yPoreBoundary[1] = p.L_HALF[1] + 0.5*p.poreWidth;
     p.zPoreBoundary[0] = p.L_HALF[2];
     p.zPoreBoundary[1] = p.L_HALF[2] + (p.wallLayers-1)*p.wallDist;
-    
+
     double xPoreDist = (p.xPoreBoundary[1]-p.xPoreBoundary[0])
                       /(numPoreParts_1D+1);
     double yPoreDist = (p.yPoreBoundary[1]-p.yPoreBoundary[0])
@@ -154,7 +155,7 @@ void initWallWithPore(void)
 	 * pore in y direction, as so:
 	 * 
 	 *  ^ y
-         *  |
+   *  |
 	 *   -->x
 	 *
 	 * o  o  o  o     o  o  o  o		     
@@ -166,7 +167,7 @@ void initWallWithPore(void)
 	 *
 	 * o  o  o  o     o  o  o  o
 	 *
-         * o  o  o  o     o  o  o  o
+   * o  o  o  o     o  o  o  o
 	 */
         for (j=0;j<p.Nwall_y;j++) // y direction
         {
@@ -174,8 +175,21 @@ void initWallWithPore(void)
             {
                 for (d=0;d<3;d++)
                     part_i->r[d] = currentPos[d];
+
+                // Only middle layer of wall particles should be pore particles
+                if ((currentPos[0] > p.xPoreBoundary[0]-0.001) &&
+                    (currentPos[0] < p.xPoreBoundary[1]+0.001) &&
+                    (currentPos[1] > p.yPoreBoundary[0]-0.001) &&
+                    (currentPos[1] < p.yPoreBoundary[1]+0.001) &&
+                    (currentPos[2] > p.zPoreBoundary[0]+0.001) &&
+                    (currentPos[2] < p.zPoreBoundary[1]-0.001)) {
+                  part_i->porePart = 1;
+                } else {
+                  part_i->porePart = 0;
+                } 
                 
-		currentPos[0] += xWallDist;
+                
+		            currentPos[0] += xWallDist;
                 
                 if (currentPos[0] >= p.L[0]) // PBC in x direction
                     currentPos[0] -= p.L[0];
@@ -200,7 +214,19 @@ void initWallWithPore(void)
             {
                 for (d=0;d<3;d++)
                     part_i->r[d] = currentPos[d];
-                
+
+                // Only middle layer of wall particles should be pore particles
+                if ((currentPos[0] > p.xPoreBoundary[0]-0.001) &&
+                    (currentPos[0] < p.xPoreBoundary[1]+0.001) &&
+                    (currentPos[1] > p.yPoreBoundary[0]-0.001) &&
+                    (currentPos[1] < p.yPoreBoundary[1]+0.001) &&
+                    (currentPos[2] > p.zPoreBoundary[0]+0.001) &&
+                    (currentPos[2] < p.zPoreBoundary[1]-0.001)) {
+                  part_i->porePart = 1;
+                } else {
+                  part_i->porePart = 0;
+                } 
+
                 currentPos[0] += xPoreDist;
                 
                 if (currentPos[0] >= p.L[0]) // x PBC
@@ -277,6 +303,8 @@ void initPoly(void)
     part_i = part;
     for (i=0;i<p.Nmon;i++,part_i++)
     {
+        part_i->porePart = 0;
+        
         for (d=0;d<3;d++)
         {
             part_i->r[d] += randDisp*
@@ -388,6 +416,7 @@ void initPolyInPore(void)
     part_i = part;
     for (i=0;i<p.Nmon;i++)
     {
+        part_i->porePart = 0;
         for (d=0;d<3;d++)
         {
             part_i->r[d] += randDisp*

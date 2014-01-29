@@ -5,8 +5,8 @@
  * Copyright (C) Matthieu Hughes, 2013
  * matthieuhughes.1@gmail.com
  *
- * last update: 24/06/13, Matthieu Hughes
- *      split calc into calc_rerg and calc_other
+ * last update: 20/11/13, Taylor Dunn
+ *      added code to find number of solvent particles in pore at end of translocation
  *
  */
 
@@ -84,6 +84,13 @@ void calcNseg(double ti)
 			
         double tf = (double)clock()/CLOCKS_PER_SEC;
         fprintf(f.log,"%.2f\truntime (s)\n",tf-ti);
+
+        // At the end of translcoation, find number of solvent particles in the pore
+        int count = 0;
+        for (i=p.Nmon;i<p.Ntot-p.Nwall;i++,part_i++) {
+          if (isInPore(part_i)) count++;
+        }
+        fprintf(f.log,"%d\tsolvent particles in the pore after simulation\n",count);
 
         exit(0);
     }
@@ -205,6 +212,6 @@ void printDens(void)
     {
         z = (double)(i+0.5)*p.binWidthDens;
         density = (double)p.dens[i]/(p.nsamp+p.L[0]*p.L[1]*p.binWidthDens);
-        fprintf(f.dens,"%f %f\n",z,dens);
+        fprintf(f.dens,"%f %f\n",z,density);
     }
 }

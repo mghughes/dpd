@@ -136,9 +136,12 @@ int main()
     /* Force strengths */
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// Aff
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// Amm
-    paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// Amf
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// Amf_cis
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// Amf_trans
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// sigma
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// sigmaPore
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// gamma
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// gammaPore
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// K
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");	// fDrive
 

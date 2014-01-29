@@ -25,7 +25,7 @@ struct files
 	*nseg,	    // translocation
         *log,	    // log file
         *dens,	    // dens (z)
-        *tempAve,   // average temperature
+        *tempAve;   // average temperature
 };
 
 typedef struct files files;

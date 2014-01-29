@@ -67,10 +67,9 @@ void fileOpenError(char *str)
 int main(int argc,char *argv[])
 {
     /* Parse command-line arguments */
-    char *filename, *exclude_s, *npts_corr_s;
+    char *filename, *exclude_s;
     filename = argv[1];
-    npts_corr_s = argv[2];
-    exclude_s = argv[3];
+    exclude_s = argv[2];
 
 
     /*
@@ -83,9 +82,7 @@ int main(int argc,char *argv[])
     FILE *dpdIn, 
          *runIn,
          *reIn,
-         *corrxOut,
-         *corryOut,
-         *corrzOut;
+         *reOut;
 
     /* Strings to store filenames */
     char remon[30];
@@ -93,7 +90,6 @@ int main(int argc,char *argv[])
     /* Parameters */
     int 
         npts,
-        npts_corr = atoi(npts_corr_s),
         exclude = atoi(exclude_s),
         njobs,
         filesPerJob,
@@ -120,9 +116,7 @@ int main(int argc,char *argv[])
         re2av[3],
         retemp[3],
         re2temp[3],
-        **re,
-        **corr,
-        **corrtemp;
+        **re;
 
 
     /*
@@ -141,9 +135,12 @@ int main(int argc,char *argv[])
     // force strengths
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // Aff
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // Amm
-    paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // Amf
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // Amf_cis
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // Amf_trans
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // sigma
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // gamma
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // sigma_pore
+    paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // gamma_pore
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // K
     paramCount += fscanf(dpdIn,"%*f\t%*s\n");   // fDrive
 
@@ -205,27 +202,25 @@ int main(int argc,char *argv[])
     else
         npts = (int)((tmax/dtSamp)-floor(eqTime/dtSamp)-1);
 
-    /* Allocate memory for corr and re 2D arrays */
+    /* Allocate memory for re 2D arrays */
     allocate2dArray(&re,npts,3);
-    allocate2dArray(&corr,npts_corr,3);
-    allocate2dArray(&corrtemp,npts_corr,3);
 
     /* Initialize values to 0 */
     for (d=0;d<3;d++)
         reav[d] = re2av[d] = retemp[d] = re2temp[d] = 0;
-
-    for (i=0;i<npts_corr;i++)
-    {
-        for (d=0;d<3;d++)
-            re[i][d] = corr[i][d] = corrtemp[i][d] = 0;
-    }	
-
     
     /*
      * -----------------------
      * READ RE DATA FROM FILES
      * -----------------------
      */
+
+    char outFilename[20];
+
+    sprintf(outFilename, "%s_ave", filename);	
+
+    if ((reOut=fopen(outFilename,"w"))==NULL)
+        fileOpenError(outFilename);
 
     count=0;
     /* Loop through jobs */
@@ -237,12 +232,6 @@ int main(int argc,char *argv[])
             for (d=0;d<3;d++)
                 retemp[d] = re2temp[d] = 0;		
 	        
-            for (i=0; i<npts_corr; i++)
-	    {
-                for (d=0;d<3;d++)
-                    corrtemp[i][d] = 0;
-	    }
-            
             /* Concatenate file names */
             if (filesPerJob == 1)
                 sprintf(remon,"%s-%02d",filename,n+1);
@@ -270,7 +259,7 @@ int main(int argc,char *argv[])
                     remon);
 
 	    /* Exclude equilibration time */
-	    for (i=exclude; i<npts-npts_corr; i++)
+	    for (i=exclude; i<npts; i++)
 	    {
                 for (d=0;d<3;d++)
                 {
@@ -283,36 +272,18 @@ int main(int argc,char *argv[])
             for (d=0;d<3;d++)
             {
 
-	        retemp[d] /= (npts-npts_corr-exclude);
-	        re2temp[d] /= (npts-npts_corr-exclude);
+	        retemp[d] /= (npts-exclude);
+	        re2temp[d] /= (npts-exclude);
             }
 
-	    /* Increment total */
+	    /* Increment total 
 	    for (d=0;d<3;d++)
             {
                 reav[d] += retemp[d];
                 re2av[d] += re2temp[d];
-            }
+            }*/
 
-            /* Calculate correlation function */
-	    for (i=exclude; i<npts-npts_corr; i++)
-	    {
-		for (j=i; j<i+npts_corr; j++)
-	        {
-                    for (d=0;d<3;d++)
-                        corrtemp[j-i][d] += re[i][d]*re[j][d];
-		}
-	    }
-	    for (i=0; i<npts_corr; i++)
-	    {
-                /* Average over single file */
-                for (d=0;d<3;d++)
-                    corrtemp[i][d] /= (npts-npts_corr-exclude);
-
-                /* Increment total */
-                for (d=0;d<3;d++)
-                    corr[i][d] += corrtemp[i][d];
-	    }
+            fprintf(reOut, "%lf\n", sqrt(re2temp[0] + re2temp[1] + re2temp[2]));
 
 	} // end filesPerJob loop
     } // end nfiles loop
@@ -329,44 +300,23 @@ int main(int argc,char *argv[])
      * -------------------------------
      */
 
-    /* Averages over all files */
+    /* Averages over all files 
     for (d=0;d<3;d++)
     {
         reav[d] /= count;
         re2av[d] /= count;
-    }
+    }*/
 
-    /* Normalize correlation functions */
-    for (i=0; i<npts_corr; i++)
-    {
-        for (d=0;d<3;d++)
-        {
-            corr[i][d] /= count;
-            corr[i][d] -= (reav[d]*reav[d]);
-            corr[i][d] /= (re2av[d] - reav[d]*reav[d]);
-        }
-    }
 
-    /* Print correlation functions to three files */
-    char outFilenamex[20], outFilenamey[20], outFilenamez[20];
+    /* Print correlation functions to three files 
+    char outFilename[20];
 
-    sprintf(outFilenamex, "%s-corrx", filename);	
-    sprintf(outFilenamey, "%s-corry", filename);
-    sprintf(outFilenamez, "%s-corrz", filename);	
+    sprintf(outFilename, "%s2_ave", filename);	
 
-    if ((corrxOut=fopen(outFilenamex,"w"))==NULL)
-        fileOpenError(outFilenamex);
-    if ((corryOut=fopen(outFilenamey,"w"))==NULL)
-        fileOpenError(outFilenamey);
-    if ((corrzOut=fopen(outFilenamez,"w"))==NULL)
-        fileOpenError(outFilenamez);
+    if ((re2Out=fopen(outFilename,"w"))==NULL)
+        fileOpenError(outFilename);
 
-    for (i=0;i<npts_corr;i++)
-    {
-	fprintf(corrxOut,"%f %f\n",i*dtSamp,corr[i][0]);
-        fprintf(corryOut,"%f %f\n",i*dtSamp,corr[i][1]);
-        fprintf(corrzOut,"%f %f\n",i*dtSamp,corr[i][2]);
-    } 
+    fprintf(re2Out, "%f", (re2av[0] + re2av[1] + re2av[2])/3);*/
 
     /* causing weird fatal error 
        free2dArray(&corr,npts_corr,3);
