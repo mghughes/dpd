@@ -107,12 +107,12 @@ void printReRg(double (*rmon)[3], double *CM)
     for (i=0;i<p.Nmon;i++)
     {
         for (d=0;d<3;d++)
-            rg[d] += rmon[i][d]-CM[d];
+            rg[d] += (rmon[i][d]-CM[d]) * (rmon[i][d]-CM[d]);
     }
     
     for (d=0;d<3;d++)
     {
-        rg[d] = rg[d]*rg[d]*p.recNmon;
+        rg[d] *= p.recNmon;
         re[d] = rmon[p.Nmon-1][d]-rmon[0][d];
     }
 
@@ -141,7 +141,7 @@ void printReRg_cisTrans(double (*rmon)[3],
         for (i=0;i<p.NmonCis;i++)
         {
             for (d=0;d<3;d++)
-                rg_cis[d] += rmon[i][d]-CMcis[d];
+                rg_cis[d] += (rmon[i][d]-CMcis[d]) * (rmon[i][d]-CMcis[d]);
         }
     }
     if (p.NmonTrans != 0 && p.NmonTrans != 1)
@@ -149,7 +149,7 @@ void printReRg_cisTrans(double (*rmon)[3],
         for (i=p.Nmon-p.NmonTrans;i<p.Nmon;i++)
         {
             for (d=0;d<3;d++)
-                rg_cis[d] += rmon[i][d]-CMtrans[d];
+                rg_trans[d] += (rmon[i][d]-CMtrans[d]) * (rmon[i][d]-CMtrans[d]);
         }
     }
 
@@ -158,7 +158,7 @@ void printReRg_cisTrans(double (*rmon)[3],
     {
         for (d=0;d<3;d++)
         {
-            rg_cis[d] = rg_cis[d]*rg_cis[d]/p.NmonCis;
+            rg_cis[d] /= p.NmonCis;
             re_cis[d] = rmon[p.NmonCis-1][d]-rmon[0][d];
         }
     }
@@ -166,7 +166,7 @@ void printReRg_cisTrans(double (*rmon)[3],
     {
         for (d=0;d<3;d++)
         {
-            rg_trans[d] = rg_trans[d]*rg_trans[d]/p.NmonTrans;
+            rg_trans[d] /= p.NmonTrans;
             re_trans[d] = rmon[p.Nmon-1][d]-rmon[p.Nmon-p.NmonTrans][d];
         }
     }
